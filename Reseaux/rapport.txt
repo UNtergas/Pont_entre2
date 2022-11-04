@@ -1,0 +1,89 @@
+Rapport-TP-reseau
+TP1
+1.3.4.2) IfConfig et ping sur le Routeur
+IP du routeur : 192.168.106.177
+
+image
+
+image
+
+1.3.4.3) Affichage /etc/hosts
+image
+
+1.6.1) If Config
+Les 3 cartes réseaux ont bien étaient créées.
+
+image
+
+1.6.2) Table Routage Routeur
+image
+
+Table Routage Host1
+image
+
+Table Routage Host2
+image
+
+1.9.4 Activation IPForwarding
+image
+
+IP Forwarding est le procédé qui fait le routage internet, il va permettre de déterminer la direction du réseau où les paquets IP, les datagrammes peut être envoyé (routage IP).
+
+L'ip forwarding va spécifier au routeur de faire passer les paquets qui ne lui sont pas adréssés.
+
+1.10.1 Activation de Mascarade
+Afin de pouvoir ping 8.8.8.8 depuis host1 nous avons du activer Mascarade afin de faire en sorte que l'adresse du routeur puisse etre mis sur le paquet de host1 envoyé sur internet
+
+image
+
+TP2
+Config routeur 1
+ 
+ ipR2 = '172.30.0.2'
+ ipR3 = '172.40.0.2'
+ networkHost3 = '172.60.0.0\16'
+ networkHost4 = '172.70.0.0\16'
+  
+ ## Route classique
+ ip route add $networkHost3 via $ipRouteur2 metric 500
+ ip route add $networkHost4 via $ipRouteur3 metric 500
+ 
+ ## Route de Secours
+ 
+ ip route add $networkHost3 via $ipRouteur3 metric 1000
+ ip route add $networkHost4 via $ipRouteur2 metric 1000
+ 
+Config routeur 2
+ ipR1 = '172.30.0.2'
+ ipR3 = '172.50.0.2'
+ networkHost1 = '172.10.0.0\16'
+ networkHost2 = '172.20.0.0\16'
+ networkHost4 = '172.70.0.0\16'
+  
+ ## Route classique
+ ip route add $networkHost1 via $ipRouteur2 metric 500
+ ip route add $networkHost2 via $ipRouteur1 metric 500
+ ip route add $networkHost4 via $ipRouteur3 metric 500
+ 
+ ## Route de Secours
+ 
+ ip route add $networkHost1 via $ipRouteur3 metric 1000
+ ip route add $networkHost2 via $ipRouteur3 metric 1000
+ ip route add $networkHost4 via $ipRouteur1 metric 1000
+Config routeur 3
+ ipR1 = '172.40.0.2'
+ ipR2 = '172.50.0.2'
+ networkHost1 = '172.10.0.0\16'
+ networkHost2 = '172.20.0.0\16'
+ networkHost3 = '172.60.0.0\16'
+  
+ ## Route classique
+ ip route add $networkHost1 via $ipRouteur1 metric 500
+ ip route add $networkHost2 via $ipRouteur1 metric 500
+ ip route add $networkHost3 via $ipRouteur2 metric 500
+ 
+ ## Route de Secours
+ 
+ ip route add $networkHost1 via $ipRouteur2 metric 1000
+ ip route add $networkHost2 via $ipRouteur2 metric 1000
+ ip route add $networkHost3 via $ipRouteur1 metric 1000S
