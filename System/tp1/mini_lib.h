@@ -27,5 +27,6 @@ void mini_exit();
 void mini_printf(char *msg);
 int mini_scanf(char *msg, int size_msg);
 int mini_strlen(char *s);
-
+int mini_strcpy(char *s, char *d);
+int mini_strcmp(char *s1, char *s2);
 #endif

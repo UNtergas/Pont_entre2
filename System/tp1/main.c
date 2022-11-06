@@ -25,9 +25,14 @@ void test_chaine_carac()
     puts("");
     mini_printf("test abc");
     puts("");
-    char haidang;
+    char haidang[10];
     printf("\t%d\t", mini_scanf(&haidang, BUF_SIZE));
-    // printf("%s", haidang);
+    mini_printf(haidang);
+    char a[25];
+    char b[] = "aiosima";
+    char c[] = "aiosima";
+    printf("%d %d\n", mini_strcmp(b, c), mini_strcpy(b, a));
+    mini_printf(a);
     puts("");
 }
 int main(int argc, char **argv)

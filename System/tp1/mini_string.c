@@ -43,20 +43,11 @@ int mini_scanf(char *buffer, int size_buffer)
 {
     int cara_lus = 0;
     write(STDOUT_FILENO, ">>", 2);
-    if (read(STDIN_FILENO, buffer, size_buffer) == -1)
+    int read_result = read(STDIN_FILENO, buffer, size_buffer - 1);
+    if (read_result == -1)
         return -1;
-    for (int i = 0; i < mini_strlen(buffer) + 1; i++)
-    {
-        if (buffer[i] == '\0')
-        {
-            write(1, buffer, cara_lus);
-            return cara_lus;
-        }
-        else
-        {
-            cara_lus++;
-        }
-    }
+    buffer[read_result] = '\0';
+    return read_result;
 }
 int mini_strlen(char *s)
 {
@@ -64,4 +55,44 @@ int mini_strlen(char *s)
     while (s[i] != '\0')
         i++;
     return i;
+}
+int mini_strcpy(char *s, char *d)
+{
+    if (!d)
+    {
+        return -1;
+    }
+    while (*s != '\0')
+    {
+        *d = *s;
+        d++;
+        s++;
+    }
+    *d = '\0';
+    return mini_strlen(d);
+}
+int mini_strcmp(char *s1, char *s2)
+{
+    if (!s1 || !s2)
+    {
+        return -1;
+    }
+    if (mini_strlen(s1) != mini_strlen(s2))
+    {
+        return -1;
+    }
+    else
+    {
+        int i = 0;
+        while (i < mini_strlen(s1))
+        {
+            if (s1[i] != s2[i])
+                return -1;
+            i++;
+        }
+    }
+    return 0;
+}
+void mini_perror(char *message)
+{
 }

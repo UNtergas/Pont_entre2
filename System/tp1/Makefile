@@ -7,5 +7,5 @@ clean:
 build:
 	gcc -Wall $(filter-out $@,$(MAKECMDGOALS)).c -o $(filter-out $@,$(MAKECMDGOALS))
 all:
-	gcc -Wall *.c  -o main
+	gcc -ggdb -Wall *.c  -o main
 
