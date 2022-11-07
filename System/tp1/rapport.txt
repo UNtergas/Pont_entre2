@@ -1,0 +1,23 @@
+********EX5:********
+
+on le fait parce qu’avec un malloc normal, le zone mémoire alloué est init avec un value quelcon, donc pour une meilleur optimization, on alloue le mémoire et tous le met à ‘\0’
+
+**EX6**:
+
+le fonction free signaler les zones qu’on veut plus ultiliser pour le reecrire(data overwrtite) quand on appel a malloc oc calloc ou realloc  
+
+**********EX12:**********
+
+on teste avec un declaration d’une pointer sur 1 char,  et apres on l’afficher le contenu pointe par cet pointeur pour assurer que la memoire a bien reservee pour le pointer
+
+pour tester le free, on peut ajouter un compteur(flag) :
+
+idée c’est après on a déjà free un bloc mémoire, donc après on fait le calloc, le nombre d’élement dans notre list chainée devrait reste unchangé
+
+>> flag (avant calloc) = flag (après calloc) → free succédé;
+
+>> flag (avant calloc) < flag (après calloc) → free échec, un nouvel bloc était ajouté au fin du list
+
+************EX17:************
+
+si on mets mini_printf selon les critères du exercise 16,si on met”a”, on trouve pas ‘\0’ pour arreter et si on rencontre un ‘\n’ au milieu du chain, on perdu tous les élements après le saut du ligne,

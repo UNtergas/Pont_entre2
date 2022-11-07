@@ -21,7 +21,7 @@ malloc_element *cree_mem_os(malloc_element *last, int size)
     // void *resquest_mem = sbrk(size + DATA_SIZE);
     if (sbrk(size + DATA_SIZE) == (void *)-1)
     {
-        perror("echec sbrk\n");
+        mini_perror("echec sbrk\n");
         return NULL; // echec du sbrk
     }
     block->taille = size;
@@ -50,7 +50,7 @@ void *mini_malloc(int size)
             bloc = cree_mem_os(last, size);
             if (!bloc)
             {
-                strerror("calloc failed");
+                mini_perror("calloc failed");
                 return NULL;
             }
         }
@@ -60,7 +60,7 @@ void *mini_malloc(int size)
         bloc = cree_mem_os(NULL, size);
         if (!bloc)
         {
-            strerror("first fail");
+            mini_perror("first fail");
             return NULL;
         }
         malloc_list = bloc;
@@ -83,7 +83,7 @@ void mini_free(void *ptr)
 {
     if (!ptr)
     {
-        perror("trouv pas ptr pr free\n");
+        mini_perror("trouv pas ptr pr free\n");
         return NULL;
     }
     malloc_element *bloc_ptr = (struct malloc_element *)ptr;

@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "mini_lib.h": "c"
-    }
+        "mini_lib.h": "c",
+        "fcntl.h": "c",
+        "types.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }
