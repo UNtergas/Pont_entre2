@@ -112,12 +112,29 @@ int mini_strcmp(char *s1, char *s2)
 
     return 0;
 }
-
+char *mini_itoa(int a)
+{
+    int digits = 0;
+    int _a = a;
+    while (_a != 0)
+    {
+        _a = _a / 10;
+        digits++;
+    }
+    char *returning = mini_malloc(sizeof(char) * (digits + 1));
+    // char *returning = calloc(1, digits + 1);
+    *(returning + digits) = '\0';
+    for (int i = 0; a != 0; i++)
+    {
+        int temp = a % 10;
+        *(returning + digits - (i + 1)) = (char)(temp + 48);
+        a = a / 10;
+    }
+    return returning;
+}
 void mini_perror(char *message)
 {
-    char *temp = mini_calloc(8, 1);
-    char error = (char)(errno + 48);
-    temp = &error;
+    char *temp = mini_itoa(errno);
     mini_printf(message);
     mini_printf(temp);
 }

@@ -65,8 +65,9 @@ void *mini_malloc(int size)
         }
         malloc_list = bloc;
     }
-    bloc->zone = bloc + 1;
-    return (bloc->zone);
+    // bloc->zone = bloc + 1;
+    // return (bloc->zone);
+    return (bloc + 1);
 }
 
 void *mini_calloc(int size_ele, int nombre_ele)
@@ -84,7 +85,7 @@ void mini_free(void *ptr)
     if (!ptr)
     {
         mini_perror("trouv pas ptr pr free\n");
-        return NULL;
+        exit(EXIT_FAILURE);
     }
     malloc_element *bloc_ptr = (struct malloc_element *)ptr;
     bloc_ptr->statut = 0;

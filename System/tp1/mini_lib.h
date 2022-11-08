@@ -51,6 +51,7 @@ int mini_strlen(char *s);
 int mini_strcpy(char *s, char *d);
 int mini_strncpy(char *s, char *d, int size);
 int mini_strcmp(char *s1, char *s2);
+char *mini_itoa(int a);
 void mini_perror(char *message);
 
 // gestion entre sortie

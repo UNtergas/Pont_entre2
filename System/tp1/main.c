@@ -53,6 +53,10 @@ int main(int argc, char **argv)
 {
     // test_memoire();
     // test_chaine_carac();
-    test_io();
+    // test_io();
+    char a[20];
+    char *ptr = a;
+    ptr = mini_itoa(1);
+    mini_printf(a);
     mini_exit();
 }

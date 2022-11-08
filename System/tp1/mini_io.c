@@ -69,30 +69,32 @@ int mini_fread(void *buffer, int size_element, int number_element, MYFILE *file)
         mini_perror("file NULL");
         return -1;
     }
+    mini_printf("g0\n");
     if (file->ind_read == -1)
     {
-        // file->buffer_read = mini_calloc(size_element, IOBUFFER_SIZE);
-        file->buffer_read = (char *)malloc(10 * sizeof(char));
+        file->buffer_read = mini_calloc(size_element, IOBUFFER_SIZE);
+        // file->buffer_read = (char *)malloc(100 * sizeof(char));
         file->ind_read = 0;
     }
+    mini_printf("g2\n");
     // mini_printf("here\n");
     if (file->ind_read >= IOBUFFER_SIZE)
     {
-        if (read(file->fd, (char *)file->buffer_read, IOBUFFER_SIZE - 1) == -1)
-            mini_perror("cant read");
-        *((char *)file->buffer_read + IOBUFFER_SIZE) = '\0';
-        return IOBUFFER_SIZE;
+        file->ind_read = 0;
     }
-    else if (file->ind_read == mini_strlen(file->buffer_read))
+    else if (file->ind_read == 0)
     {
-        file->ind_read = read(file->fd, (char *)file->buffer_read, IOBUFFER_SIZE);
-        *((char *)file->buffer_read + file->fd) = '\0';
+        if (read(file->fd, (char *)file->buffer_read, IOBUFFER_SIZE) == -1)
+            mini_perror("cant read\n");
+        *((char *)file->buffer_read + IOBUFFER_SIZE) = '\0';
         mini_printf(file->buffer_read);
     }
     int count = 0;
+    mini_printf("g1\n");
     for (int i = 0; i < number_element; i++)
     {
-        *((char *)buffer + i) = *((char *)file->buffer_read + i);
+        *((char *)buffer + i) = *((char *)file->buffer_read + file->ind_read);
+        file->ind_read++;
         count++;
     }
     *((char *)buffer + count) = '\0';
