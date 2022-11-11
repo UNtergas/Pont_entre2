@@ -1,6 +1,6 @@
 default: build 
 
-.PHONY : build  clean
+.PHONY : build  clean  all  debug
 
 clean:
 	 ls | grep -v "\." | grep -v Makefile | xargs rm 
@@ -9,3 +9,8 @@ build:
 all:
 	gcc -g -Wall *.c  -o main
 
+debug:
+	gdb ./main
+
+memcheck:
+	valgrind --leak-check=yes ./main 

@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <errno.h>
 #include <stdio.h>
 /*
@@ -35,13 +36,22 @@ typedef struct MYFILE MYFILE;
             FONCTIONS
 */
 // allocation memoire
-#define DATA_SIZE sizeof(struct malloc_element)
+#define ALIGNMENT 8
+#define ALIGN(size) (((size) + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
+/*
+    ex: ALIGN(1)=ALIGN(3)=ALIGN(7)=8
+    ALIGN(9)=ALIGN(13)=16
+*/
+#define DATA_SIZE (ALIGN(sizeof(struct malloc_element)))
+//-------
 malloc_element *trouver_bloc_libre(malloc_element **last, int size);
-malloc_element *cree_mem_os(malloc_element *last, int size);
+// malloc_element *cree_mem_os(malloc_element *last, int size);
 void *mini_malloc(int size);
 void *mini_calloc(int size_ele, int nombre_ele);
 void mini_free(void *ptr);
 void mini_exit();
+// v2
+malloc_element *_ajouter_nouvel(malloc_element *_parcour, int size);
 
 // gestion chain caractere
 #define BUF_SIZE 1024
@@ -63,6 +73,8 @@ void mini_perror(char *message);
 #define OPEN_RW 'b'
 #define OPEN_ADD_END 'a'
 
+MYFILE *file_ptr_constructor();
 MYFILE *mini_open(char *file, char mode);
 int mini_fread(void *buffer, int size_element, int number_element, MYFILE *file);
+int mini_fwrite(void *buffer, int size_element, int number_element, MYFILE *file);
 #endif

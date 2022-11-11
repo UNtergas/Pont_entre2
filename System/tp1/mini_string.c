@@ -1,13 +1,13 @@
 #include "mini_lib.h"
 
-static char *buffer;
-static int ind = -1;
+char *buffer;
+int ind = -1;
 
 void mini_printf(char *msg)
 {
     if (ind == -1)
     {
-        buffer = mini_calloc(sizeof(char), BUF_SIZE);
+        buffer = mini_malloc(sizeof(char) * BUF_SIZE);
         // buffer = calloc(BUF_SIZE, sizeof(char));
         if (!buffer)
         {
@@ -121,7 +121,7 @@ char *mini_itoa(int a)
         _a = _a / 10;
         digits++;
     }
-    char *returning = mini_malloc(sizeof(char) * (digits + 1));
+    char *returning = mini_calloc(sizeof(char), (digits + 1));
     // char *returning = calloc(1, digits + 1);
     *(returning + digits) = '\0';
     for (int i = 0; a != 0; i++)
@@ -134,7 +134,9 @@ char *mini_itoa(int a)
 }
 void mini_perror(char *message)
 {
-    char *temp = mini_itoa(errno);
+    char temp[4];
+    mini_strncpy(mini_itoa(errno), temp, 4);
     mini_printf(message);
     mini_printf(temp);
+    write(1, "\n", 1);
 }
