@@ -29,6 +29,7 @@ struct MYFILE
     void *buffer_write;
     int ind_read;
     int ind_write;
+    struct MYFILE *next_file;
 };
 typedef struct MYFILE MYFILE;
 
@@ -75,6 +76,11 @@ void mini_perror(char *message);
 
 MYFILE *file_ptr_constructor();
 MYFILE *mini_open(char *file, char mode);
+extern MYFILE *__list_file;
 int mini_fread(void *buffer, int size_element, int number_element, MYFILE *file);
 int mini_fwrite(void *buffer, int size_element, int number_element, MYFILE *file);
+int mini_fflush(MYFILE *file);
+int mini_fclose(MYFILE *file);
+int mini_fgetc(MYFILE *file);
+int mini_fputc(MYFILE *file, char c);
 #endif

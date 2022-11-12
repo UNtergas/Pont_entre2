@@ -1,6 +1,7 @@
 #include "mini_lib.h"
+
 int __read_count = 0;
-int __write_count = 0;
+MYFILE *__list_file = NULL;
 MYFILE *file_ptr_constructor()
 {
     MYFILE *_ptr = mini_calloc(sizeof(MYFILE), 1);
@@ -9,6 +10,7 @@ MYFILE *file_ptr_constructor()
     _ptr->buffer_read = NULL;
     _ptr->buffer_write = NULL;
     _ptr->fd = -1;
+    _ptr->next_file = NULL;
     return _ptr;
 }
 MYFILE *mini_open(char *file, char mode)
@@ -66,13 +68,17 @@ MYFILE *mini_open(char *file, char mode)
         mini_printf("invalid mode input\n");
         break;
     }
-    // MYFILE *_ptr = mini_calloc(sizeof(MYFILE), 1);
-    // _ptr->ind_read = -1;
-    // _ptr->ind_write = -1;
-    // _ptr->buffer_read = NULL;
-    // _ptr->buffer_write = NULL;
     MYFILE *_ptr = file_ptr_constructor();
     _ptr->fd = _flag;
+    if (!__list_file)
+    {
+        __list_file = _ptr;
+    }
+    else
+    {
+        _ptr->next_file = __list_file;
+        __list_file = _ptr;
+    }
     return _ptr;
 }
 
@@ -85,7 +91,7 @@ int mini_fread(void *buffer, int size_element, int number_element, MYFILE *file)
     }
     if (file->ind_read == -1)
     {
-        file->buffer_read = mini_calloc(IOBUFFER_SIZE, size_element);
+        file->buffer_read = mini_calloc(IOBUFFER_SIZE, 1);
 
         file->ind_read = 0;
     }
@@ -122,28 +128,95 @@ int mini_fwrite(void *buffer, int size_element, int number_element, MYFILE *file
     }
     if (file->ind_write == -1)
     {
-        file->buffer_write = mini_calloc(IOBUFFER_SIZE, size_element);
-        printf("mallco\n");
+        file->buffer_write = mini_calloc(IOBUFFER_SIZE, 1);
+        // printf("mallco\n");
         file->ind_write = 0;
     }
-    else if (file->ind_write > IOBUFFER_SIZE)
-    {
-        file->ind_write = IOBUFFER_SIZE;
-    }
+
     int _flag = 0;
     mini_printf(buffer);
     while (_flag < number_element && *((char *)buffer + file->ind_write) != '\0')
     {
-        printf("%d-", _flag);
-        *((char *)file->buffer_write + _flag) = *((char *)buffer + file->ind_write);
+        // printf("-%d-", _flag);
+        *((char *)(file->buffer_write + file->ind_write)) = *((char *)(buffer + _flag));
         file->ind_write++;
         _flag++;
     }
     *((char *)file->buffer_write + _flag) = '\0';
-    printf("\n");
-    mini_printf(file->buffer_write);
-    int __count_fwrite = write(file->fd, (char *)file->buffer_write, _flag);
-    if (__count_fwrite == -1)
-        mini_perror("cant write:code:");
+    if (file->ind_write >= IOBUFFER_SIZE)
+    {
+        int __count_fwrite = write(file->fd, (char *)file->buffer_write, file->ind_write);
+        if (__count_fwrite == -1)
+        {
+            mini_perror("cant write:code:");
+            return -1;
+        }
+    }
+    return _flag;
+}
+int mini_fflush(MYFILE *file)
+{
+    if (!file->buffer_write)
+        return -1;
+    int __count_fwrite;
+    if (file->ind_write != -1)
+    {
+        __count_fwrite = write(file->fd, (char *)file->buffer_write, file->ind_write);
+        if (__count_fwrite == -1)
+            mini_perror("cant write here:code:");
+    }
+    file->ind_write = 0;
     return __count_fwrite;
+}
+int mini_fclose(MYFILE *file)
+{
+    mini_fflush(file);
+    int __close_idx = close(file->fd);
+    if (__close_idx == -1)
+    {
+        mini_perror("error close,code:");
+        return -1;
+    }
+    if (__list_file == file)
+    {
+        __list_file = __list_file->next_file;
+    }
+    else
+    {
+        MYFILE **_last = NULL;
+        MYFILE *current;
+        current = __list_file;
+        while (current)
+        {
+            if (current == file)
+            {
+                (*_last)->next_file = file->next_file;
+            }
+            *_last = current;
+            current = current->next_file;
+        }
+    }
+    mini_free(file);
+    return 0;
+}
+
+int mini_fgetc(MYFILE *file)
+{
+    char *_char_ptr = mini_calloc(4, 1);
+    mini_fread(_char_ptr, 1, 1, file);
+    mini_printf(_char_ptr);
+    char _char = *_char_ptr;
+    return (int)_char;
+}
+
+int mini_fputc(MYFILE *file, char c)
+{
+    char a[1];
+    a[0] = c;
+
+    if (mini_fwrite(a, 1, 1, file) == -1)
+    {
+        mini_perror("error fputc:code>");
+    }
+    return 1;
 }

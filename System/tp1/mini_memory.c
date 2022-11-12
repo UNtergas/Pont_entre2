@@ -126,5 +126,11 @@ void mini_free(void *ptr)
 
 void mini_exit()
 {
-    exit(EXIT_SUCCESS);
+    MYFILE *_parcour = __list_file;
+    while (_parcour)
+    {
+        mini_fflush(_parcour);
+        _parcour = _parcour->next_file;
+    }
+    _Exit(EXIT_SUCCESS);
 }

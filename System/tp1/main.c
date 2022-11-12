@@ -63,11 +63,21 @@ void test_io()
     // mini_printf(a);
     // mini_printf(b);
     // printf("\nread_a:%d|read_b:%d\n", _read_a, _read_b);
-    int a = mini_fwrite(_write, 1, 12, _file);
-    char c[20];
-    mini_fread(c, 1, 6, _file);
-    // printf("%d\n", a);
-    // mini_printf(c);
+    // int a = mini_fwrite(_write, 1, 43, _file);
+    char b[20], c[20];
+    mini_fread(b, 1, 2, _file);
+    mini_fread(c, 1, 4, _file);
+    // // printf("%d\n", a);
+    mini_printf(b);
+    printf("\n");
+    mini_printf(c);
+    printf("\n");
+    char a_1 = mini_fgetc(_file);
+    char a_2 = mini_fgetc(_file);
+    char a_3 = mini_fgetc(_file);
+    char c_1 = '8';
+    printf("\n%c %c %c\n", a_1, a_2, a_3);
+    mini_fputc(_file, c_1);
 }
 int main(int argc, char **argv)
 {
