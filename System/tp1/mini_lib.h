@@ -9,6 +9,9 @@
 #include <stddef.h>
 #include <errno.h>
 #include <stdio.h>
+#include <stdbool.h>
+#include <sys/wait.h>
+#include <ctype.h>
 /*
     STRUCT DEF
 */
@@ -73,6 +76,7 @@ void mini_perror(char *message);
 #define OPEN_WRITE 'w'
 #define OPEN_RW 'b'
 #define OPEN_ADD_END 'a'
+#define CREAT_DEL 'd'
 
 MYFILE *file_ptr_constructor();
 MYFILE *mini_open(char *file, char mode);
@@ -83,4 +87,16 @@ int mini_fflush(MYFILE *file);
 int mini_fclose(MYFILE *file);
 int mini_fgetc(MYFILE *file);
 int mini_fputc(MYFILE *file, char c);
+/*extra*/
+int mini_fseek_read(MYFILE *file, int _offset, int _mode);
+
+// command du system
+void mini_touch(char *file);
+void mini_cp(char *src, char *dest);
+void mini_echo(char *chaine);
+void mini_cat(char *_file);
+void mini_head(int n, char *_file);
+void mini_clean(char *file);
+void mini_grep(char *file, char *keyword);
+void mini_wc(char *file);
 #endif

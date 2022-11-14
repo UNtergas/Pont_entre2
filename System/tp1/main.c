@@ -56,7 +56,7 @@ void test_io()
     _file = file_ptr_constructor();
     _file = mini_open("write.txt", 'b');
     // _file = mini_open("write.txt", 'w');
-    char _write[] = "im going to write y'all";
+    // char _write[] = "im going to write y'all";
     // char *ptr = mini_calloc(1, 100);
     // char a[50], b[20];
     // int _read_a = mini_fread(a, sizeof(char), 6, _file);
@@ -79,11 +79,20 @@ void test_io()
     printf("\n%c %c %c\n", a_1, a_2, a_3);
     mini_fputc(_file, c_1);
 }
-int main(int argc, char **argv)
+void test_system()
 {
-    // test_memoire();
-    // test_chaine_carac();
-    test_io();
-
-    mini_exit();
+    //     mini_cp("write.txt", "cpfile.txt");
+    //     mini_cp("text.txt", "hape.txt");
+    // mini_cat("hape.txt");
+    mini_head(2, "hape.txt");
+    mini_wc("hape.txt");
 }
+// int main(int argc, char **argv)
+// {
+//     // test_memoire();
+//     // test_chaine_carac();
+//     // test_io();
+//     test_system();
+
+//     mini_exit();
+// }
