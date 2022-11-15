@@ -49,7 +49,7 @@ typedef struct MYFILE MYFILE;
 #define DATA_SIZE (ALIGN(sizeof(struct malloc_element)))
 //-------
 malloc_element *trouver_bloc_libre(malloc_element **last, int size);
-// malloc_element *cree_mem_os(malloc_element *last, int size);
+
 void *mini_malloc(int size);
 void *mini_calloc(int size_ele, int nombre_ele);
 void mini_free(void *ptr);
@@ -88,7 +88,8 @@ int mini_fclose(MYFILE *file);
 int mini_fgetc(MYFILE *file);
 int mini_fputc(MYFILE *file, char c);
 /*extra*/
-int mini_fseek_read(MYFILE *file, int _offset, int _mode);
+void remove_spaces(char *str);
+void _del(char **c);
 
 // command du system
 void mini_touch(char *file);
@@ -96,7 +97,9 @@ void mini_cp(char *src, char *dest);
 void mini_echo(char *chaine);
 void mini_cat(char *_file);
 void mini_head(int n, char *_file);
+void mini_tail(int n, char *_file);
 void mini_clean(char *file);
 void mini_grep(char *file, char *keyword);
 void mini_wc(char *file);
+
 #endif

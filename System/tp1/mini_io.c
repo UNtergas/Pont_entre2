@@ -29,7 +29,6 @@ MYFILE *mini_open(char *file, char mode)
             return NULL;
         }
 
-        // return _flag;
         break;
     }
     case CREAT_DEL:
@@ -41,7 +40,6 @@ MYFILE *mini_open(char *file, char mode)
             return NULL;
         }
 
-        // return _flag;
         break;
     }
     case OPEN_RW:
@@ -53,18 +51,17 @@ MYFILE *mini_open(char *file, char mode)
             return NULL;
         }
 
-        // return _flag;
         break;
     }
     case OPEN_WRITE:
     {
-        _flag = open(file, O_WRONLY | O_CREAT, 0777);
+        _flag = open(file, O_WRONLY | O_CREAT, 0666);
         if (_flag == -1)
         {
             mini_perror("cant open:");
             return NULL;
         }
-        // return _flag;
+
         break;
     }
     case OPEN_ADD_END:
@@ -75,7 +72,7 @@ MYFILE *mini_open(char *file, char mode)
             mini_perror("cant open:");
             return NULL;
         }
-        // return _flag;
+
         break;
     }
     default:
@@ -148,10 +145,10 @@ int mini_fwrite(void *buffer, int size_element, int number_element, MYFILE *file
     }
 
     int _flag = 0;
-    // mini_printf(buffer);
+
     while (_flag < number_element && *((char *)buffer + file->ind_write) != '\0')
     {
-        // printf("-%d-", _flag);
+
         *((char *)(file->buffer_write + file->ind_write)) = *((char *)(buffer + _flag));
         file->ind_write++;
         _flag++;
@@ -182,22 +179,7 @@ int mini_fflush(MYFILE *file)
     file->ind_write = 0;
     return __count_fwrite;
 }
-// static void skip_file(MYFILE **_last, MYFILE *file)
-// {
-//     MYFILE *current = __list_file;
-//     while (current != NULL)
-//     {
-//         if (current == file)
-//         {
-//             (*_last)->next_file = file->next_file;
-//         }
-//         else
-//         {
-//             *_last = current;
-//             current = current->next_file;
-//         }
-//     }
-// }
+
 int mini_fclose(MYFILE *file)
 {
     mini_fflush(file);
@@ -251,26 +233,4 @@ int mini_fputc(MYFILE *file, char c)
         mini_perror("error fputc:code>");
     }
     return 1;
-}
-
-int mini_fseek_read(MYFILE *file, int _offset, int _mode)
-{
-    switch (_mode)
-    {
-    case SEEK_SET:
-    {
-        file->ind_read = 0 + _offset;
-        break;
-    }
-    case SEEK_END:
-    {
-        char a[IOBUFFER_SIZE];
-        mini_fread(a, 1, IOBUFFER_SIZE, file);
-        file->ind_read -= _offset;
-        break;
-    }
-    case SEEK_CUR:
-        break;
-    }
-    return file->ind_read;
 }

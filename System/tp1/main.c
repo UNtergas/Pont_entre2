@@ -1,9 +1,24 @@
 #include "mini_lib.h"
+void remove_spaces(char *str)
+{
 
+    int count = 0;
+
+    for (int i = 0; str[i] != '\0'; i++)
+        if (str[i] != ' ')
+            str[count++] = str[i];
+    str[count] = '\0';
+}
+void _del(char **c)
+{
+    while (**c == ' ')
+    {
+        (*c)++;
+    }
+}
 void test_memoire()
 {
     puts("test");
-    // int *tmp = mini_malloc(4 * sizeof(int));
     int *tmp = mini_calloc(sizeof(int), 3);
     for (int i = 0; i < 3; i++)
     {
@@ -31,7 +46,6 @@ void test_memoire()
 
 void test_chaine_carac()
 {
-    puts("");
     mini_printf("12345\n");
     mini_printf("test\nabc defg\n  ee");
     puts("");
@@ -40,8 +54,8 @@ void test_chaine_carac()
     printf("strlen lu%d\n", mini_strlen(haidang));
     mini_printf(haidang);
     char a[3];
-    char b[] = "aiosima";
-    char c[] = "aios";
+    char b[] = "123456";
+    char c[] = "1234";
     printf("compare> %d %d\n", mini_strcmp(b, c), mini_strncpy(b, a, 3));
     mini_printf(a);
     puts("");
@@ -55,19 +69,13 @@ void test_io()
     static MYFILE *_file;
     _file = file_ptr_constructor();
     _file = mini_open("write.txt", 'b');
-    // _file = mini_open("write.txt", 'w');
-    // char _write[] = "im going to write y'all";
-    // char *ptr = mini_calloc(1, 100);
-    // char a[50], b[20];
-    // int _read_a = mini_fread(a, sizeof(char), 6, _file);
-    // mini_printf(a);
-    // mini_printf(b);
-    // printf("\nread_a:%d|read_b:%d\n", _read_a, _read_b);
-    // int a = mini_fwrite(_write, 1, 43, _file);
+    char _write[] = "im going to write y'all";
+
+    mini_fwrite(_write, 1, 43, _file);
     char b[20], c[20];
     mini_fread(b, 1, 2, _file);
     mini_fread(c, 1, 4, _file);
-    // // printf("%d\n", a);
+
     mini_printf(b);
     printf("\n");
     mini_printf(c);
@@ -81,18 +89,19 @@ void test_io()
 }
 void test_system()
 {
-    //     mini_cp("write.txt", "cpfile.txt");
-    //     mini_cp("text.txt", "hape.txt");
-    // mini_cat("hape.txt");
+    mini_cp("hape.txt", "cpfile.txt");
+    mini_cat("hape.txt");
     mini_head(2, "hape.txt");
     mini_wc("hape.txt");
+    mini_tail(2, "hape.txt");
+    mini_grep("hape.txt", "file");
 }
-// int main(int argc, char **argv)
-// {
-//     // test_memoire();
-//     // test_chaine_carac();
-//     // test_io();
-//     test_system();
+int main(int argc, char **argv)
+{
+    test_memoire();
+    test_chaine_carac();
+    test_io();
+    test_system();
 
-//     mini_exit();
-// }
+    mini_exit();
+}

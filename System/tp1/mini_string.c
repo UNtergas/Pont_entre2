@@ -98,7 +98,7 @@ int mini_strncpy(char *s, char *d, int size)
 }
 int mini_strcmp(char *s1, char *s2)
 {
-    if (!s1 || !s2)
+    if ((!s1 || !s2))
     {
         return -1;
     }
