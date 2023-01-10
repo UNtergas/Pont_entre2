@@ -99,65 +99,66 @@ void mini_clean(char *file)
     mini_fclose(_file);
 }
 
+int line_occurence(char *line, char *keyword)
+{
+    char *temp = mini_calloc(1, BUF_SIZE);
+    mini_strncpy(line, temp, mini_strlen(line));
+    int flag = 0;
+    while (line[flag] != '\n' && line[flag] != '\0')
+    {
+
+        int count = 0;
+        while (temp[count] != ' ' && temp[count] != '\0' && temp[count] != '\n')
+        {
+            count++;
+            flag++;
+        }
+        char mots[20];
+        mini_strncpy(temp, mots, count);
+        if (mini_strcmp(mots, keyword) == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            temp += count;
+            _del(&temp);
+        }
+    }
+    return 0;
+}
 void mini_grep(char *file, char *keyword)
 {
     MYFILE *_ptr = mini_open(file, OPEN_READ);
     char *_buf = mini_calloc(1, IOBUFFER_SIZE);
     mini_fread(_buf, 1, IOBUFFER_SIZE, _ptr);
-    int _count_saut = 1;
+    int _count_saut = 0;
     for (int i = 0; _buf[i] != '\0'; i++)
     {
         if (_buf[i] == '\n')
             _count_saut++;
     }
-    //
-    while (_count_saut > 0)
+    while (_count_saut >= 0)
     {
-        int _count = 0;
-        for (int i = 0; _buf[i] != '\n' && _buf[i] != '\0'; i++)
-        {
-            _count++;
-        }
-        char _line[_count];
-        char *temp = mini_calloc(1, _count);
-        mini_strncpy(_buf, temp, _count);
-        mini_strncpy(_buf, _line, _count);
-        int _parcour = 0;
-        while (_line[_parcour] != '\0' && *temp != '\0')
-        {
-            int _wwc = 0;
-            for (int i = 0; temp[i] != ' ' && temp[i] != '\0'; i++)
-            {
-                _wwc++;
-                _parcour++;
-            }
-            char *_mot = mini_calloc(1, _wwc);
-            mini_strncpy(temp, _mot, _wwc);
-            remove_spaces(_mot);
-            if (mini_strcmp(_mot, keyword) == 0)
-            {
 
-                mini_printf(_line);
-                write(1, "\n", 1);
-                break;
-            }
-            else
-            {
-                temp = temp + _wwc;
-                int c = 0;
-                while (temp[c] == ' ')
-                {
-                    temp++;
-                }
-            }
-            mini_free(_mot);
+        char temp[BUF_SIZE];
+        int flag = 0;
+        while (_buf[flag] != '\n' && _buf[flag] != '\0')
+        {
+            flag++;
         }
-        //
-        mini_free(temp);
+
+        mini_strncpy(_buf, temp, flag);
+        if (line_occurence(temp, keyword) == 1)
+        {
+
+            mini_printf(temp);
+            write(1, "\n", 1);
+        }
+        _buf = _buf + 1 + flag;
+        _del(&_buf);
         _count_saut--;
-        _buf = _buf + _count + 1;
     }
-    mini_fclose(_ptr);
 }
 void mini_wc(char *file)
 {
@@ -171,6 +172,7 @@ void mini_wc(char *file)
         if (_buf[i] == '\n')
             _count_saut++;
     }
+
     /**/
     int _parcour = 0;
     while (_buf[_parcour] != '\0')

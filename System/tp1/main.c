@@ -94,7 +94,7 @@ void test_system()
     mini_head(2, "hape.txt");
     mini_wc("hape.txt");
     mini_tail(2, "hape.txt");
-    mini_grep("hape.txt", "file");
+    mini_grep("hape.txt", "line");
 }
 int main(int argc, char **argv)
 {

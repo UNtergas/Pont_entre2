@@ -1,4 +1,4 @@
-default: build 
+default: all
 
 .PHONY : build  clean  all  debug
 
