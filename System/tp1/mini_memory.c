@@ -106,5 +106,5 @@ void mini_exit()
         mini_fflush(__list_file);
         __list_file = __list_file->next_file;
     }
-    _Exit(EXIT_SUCCESS);
+    exit(EXIT_SUCCESS);
 }

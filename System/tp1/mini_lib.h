@@ -11,7 +11,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <sys/wait.h>
+#include <pwd.h>
+#include <dirent.h>
+#include <grp.h>
 #include <ctype.h>
+#include <time.h>
 /*
     STRUCT DEF
 */

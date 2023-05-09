@@ -4,7 +4,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int main()
+int main(int argc, char *argv[])
 {
     pid_t pid;
 
@@ -18,20 +18,16 @@ int main()
     else if (pid == 0)
     {
         // Code exécuté par le processus fils
-        printf("Processus fils : PID = %d, PPID = %d\n", getpid(), getppid());
-
-        // Détachement du processus fils du processus père
-        setsid();
-
-        printf("Processus fils : PID = %d, PPID = %d (après détachement)\n", getpid(), getppid());
-        sleep(5);
+        printf("\nProcessus fils : PID = %d, PPID = %d\n", getpid(), getppid());
+        execvp(argv[1], argv + 1);
+        exit(0);
     }
     else
     {
         // Code exécuté par le processus père
-        printf("Processus père : PID = %d\n", getpid());
-        exit(EXIT_SUCCESS);
+        printf("\nnProcessus père : PID = %d\n", getpid());
     }
-
+    wait(NULL);
+    printf("\npromtp\n");
     return 0;
 }

@@ -132,6 +132,7 @@ char *mini_itoa(int a)
     }
     return returning;
 }
+
 void mini_perror(char *message)
 {
     char temp[4];
